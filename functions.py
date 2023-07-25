@@ -161,9 +161,6 @@ def simulate_until_last_generation(
         )
         is_even_generation = not is_even_generation
     
-    # Append generation T
-    #print(f"Appending generation {last_generation_number}")
-    #print(f"Generation {last_generation_number} is even: {is_even_generation}")
     generations.append(curr_generation)
 
     return generations
@@ -182,8 +179,7 @@ def reached_fixation(curr_generation : list[Cell]) -> bool:
 
 def simulate_until_fixation(
     zeroth_generation : list[Cell],
-    comparison_function_config : ComparisonFunctionConfig,
-) -> int:
+    comparison_function_config : ComparisonFunctionConfig) -> int:
     """Simulate until fixation."""
     curr_generation = zeroth_generation
     is_even_generation = True
@@ -221,8 +217,6 @@ def compute_sector_boundaries_generation(curr_generation : list[Cell]) -> Sector
 def compute_sector_boundaries_trajectory(trajectory : list[list[Cell]]) -> list[SectorBoundaries]:
     """Compute sector boundaries for a trajectory."""
     return [compute_sector_boundaries_generation(curr_generation=generation) for generation in trajectory]
-
-# (can also add more statistics like m and stuff)
 
 # Special case sector boundary
 
@@ -287,8 +281,7 @@ def sector_boundary_fluctuations_time_series(boundary : list[int],
     return [sector_boundary_fluctuations(boundary[:t], zeroth_sector_boundary) for t in range(1,len(boundary))]
 
 
-# Many trials
-def single_transverse_fluctuations(zeroth_generation : list[Cell],
+def calculate_transverse_fluctuations(zeroth_generation : list[Cell],
                                    zeroth_sector_boundary : int,
                                    comparison_function_config : ComparisonFunctionConfig,
                                    number_of_generations : int) -> list[float]:
@@ -298,20 +291,6 @@ def single_transverse_fluctuations(zeroth_generation : list[Cell],
     sector_boundary = trace_special_case_sector_boundaries(res, zeroth_sector_boundary)
     return sector_boundary_fluctuations_time_series(sector_boundary, zeroth_sector_boundary)
 
-def many_transverse_fluctuations(number_of_trials : int,
-                                     zeroth_generation : list[Cell],
-                                     zeroth_sector_boundary : int,
-                                     comparison_function_config : ComparisonFunctionConfig,
-                                     number_of_generations : int) -> list[float]:
-    all_results = []
-    for i in range(number_of_trials):
-        print(f'trial #{i}', end = '\r')
-        result = single_transverse_fluctuations(zeroth_generation=zeroth_generation,
-                                                zeroth_sector_boundary=zeroth_sector_boundary,
-                                       comparison_function_config=comparison_function_config,
-                                       number_of_generations=number_of_generations)
-        all_results.append(result)
-    return all_results
 
 if __name__ == "__main__":
     pass
